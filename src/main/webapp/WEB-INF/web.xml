@@ -5,7 +5,7 @@
 <web-app>
     <display-name>Jetty Gradle FlameTuneLibrary</display-name>
     <servlet>
-        <servlet-name>FlameTuneLibrarydServlet</servlet-name>
+        <servlet-name>FlameTuneLibraryServlet</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
@@ -22,7 +22,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>FlameTuneLibrarydServlet</servlet-name>
+        <servlet-name>FlameTuneLibraryServlet</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>

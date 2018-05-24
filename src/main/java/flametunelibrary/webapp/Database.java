@@ -11,7 +11,7 @@ import java.util.List;
 public class Database {
     // Create an EntityManagerFactory when you start the application.
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("FlameTuneLibrary");
+            .createEntityManagerFactory("flametunelibrary");
 
 
 
@@ -20,13 +20,19 @@ public class Database {
     public void closeDataBase(){ENTITY_MANAGER_FACTORY.close();}
 
     /**
-     * Create a new Usuario.
-     * @param name
-     * @param autor
+     *
+     * @param id
+     * @param correo
+     * @param password
+     * @param nombre
+     * @param foto
+     * @param cantidad_memb
+     * @param fecha_inicio_memb
+     * @param nro_tarjeta
      */
-    public void create(int id, String name, String autor) {
+    public void create(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, int nro_tarjeta) {
         // Create an EntityManager
-        System.out.println("Creando Libro : " + name+ " id : "+id);
+        System.out.println("Creando Usuario : " + nombre+ " id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
@@ -37,8 +43,13 @@ public class Database {
             // crea objeto
             Usuario usr = new Usuario();
             usr.setId(id);
-            usr.setName(name);
-            usr.setAutor(autor);
+            usr.setCorreo(correo);
+            usr.setNombre_usr(nombre);
+            usr.setPassword(password);
+            usr.setUrl_foto_usr(foto);
+            usr.setCantidad_membresias(cantidad_memb);
+            usr.setFecha_inicio_membresia(fecha_inicio_memb);
+            usr.setNumero_tarjeta(nro_tarjeta);
             // guarda usuario persistentemente
             manager.persist(usr);
             // envia transaccion
@@ -71,7 +82,7 @@ public class Database {
             transaction = manager.getTransaction();
             transaction.begin();
             // Get Usuario
-            usuarios = manager.createQuery("SELECT s FROM Libro s", Usuario.class).getResultList();
+            usuarios = manager.createQuery("SELECT s FROM Usuario s", Usuario.class).getResultList();
             transaction.commit();
         } catch (Exception ex) {
             if (transaction != null) {
@@ -90,7 +101,7 @@ public class Database {
      */
     public void delete(int id) {
         // Create an EntityManager
-        System.out.println("eliminar Libro: "+id);
+        System.out.println("eliminar Usuario: "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
@@ -111,15 +122,19 @@ public class Database {
     }
 
     /**
-     * actualizando Usuario.
      *
      * @param id
-     * @param name
-     * @param age
+     * @param correo
+     * @param password
+     * @param nombre
+     * @param foto
+     * @param cantidad_memb
+     * @param fecha_inicio_memb
+     * @param nro_tarjeta
      */
-    public void update(int id, String name, String age) {
+    public void update(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, int nro_tarjeta) {
         // Create an EntityManager
-        System.out.println("Actualizando Libro : "+name+ " con id : "+id);
+        System.out.println("Actualizando Usuario : "+nombre+ " con id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
@@ -127,10 +142,14 @@ public class Database {
             transaction = manager.getTransaction();
             transaction.begin();
             Usuario usr = manager.find(Usuario.class, id);
-            usr.setName(name);
-            usr.setAutor(age);
+            usr.setCorreo(correo);
+            usr.setNombre_usr(nombre);
+            usr.setPassword(password);
+            usr.setUrl_foto_usr(foto);
+            usr.setCantidad_membresias(cantidad_memb);
+            usr.setFecha_inicio_membresia(fecha_inicio_memb);
+            usr.setNumero_tarjeta(nro_tarjeta);
             manager.persist(usr);
-
             // envia transaccion
             transaction.commit();
         } catch (Exception ex) {

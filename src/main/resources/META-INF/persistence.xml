@@ -4,7 +4,7 @@
 	version="2.0">
 
 
-	<persistence-unit name="FlameTuneLibrary"  transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="flametunelibrary"  transaction-type="RESOURCE_LOCAL">
 		<!-- Persistence provider -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- Entity classes -->
@@ -21,8 +21,8 @@
 			<property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
 
-            <property name="hibernate.connection.password" value="JEANJACQUESLEROY1"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/upb?autoReconnect=true&amp;useSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+            <property name="hibernate.connection.password" value="BOFYYCOMOVOS1"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/FlameTuneLibrary?autoReconnect=true&amp;useSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
             <property name="hibernate.connection.username" value="root"/>
 		</properties>
 	</persistence-unit>
