@@ -40,7 +40,7 @@ public class UsuarioWebApp {
         usr.setUrl_foto_usr("url foto");
         usr.setCantidad_membresias(4);
         usr.setFecha_inicio_membresia("2018-05-23");
-        usr.setNumero_tarjeta(123);
+        usr.setNumero_tarjeta("123");
         return usr.toString();
 //        return  "Algo";
     }

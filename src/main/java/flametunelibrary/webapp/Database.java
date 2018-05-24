@@ -30,7 +30,7 @@ public class Database {
      * @param fecha_inicio_memb
      * @param nro_tarjeta
      */
-    public void create(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, int nro_tarjeta) {
+    public void create(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta) {
         // Create an EntityManager
         System.out.println("Creando Usuario : " + nombre+ " id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -132,7 +132,7 @@ public class Database {
      * @param fecha_inicio_memb
      * @param nro_tarjeta
      */
-    public void update(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, int nro_tarjeta) {
+    public void update(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta) {
         // Create an EntityManager
         System.out.println("Actualizando Usuario : "+nombre+ " con id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();

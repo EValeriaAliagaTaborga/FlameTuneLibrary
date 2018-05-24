@@ -22,17 +22,17 @@ public class Usuario implements Serializable {
     @Column(name = "nombre_usuario", nullable = false)
     private String nombre_usr;
 
-    @Column(name = "url_foto_usuario")
+    @Column(name = "url_foto_usuario", nullable = true)
     private String url_foto_usr;
 
     @Column(name = "cantidad_membresias_usuario", nullable = false)
     private int cantidad_membresias;
 
-    @Column(name = "fecha_inicio_membresia_usuario")
+    @Column(name = "fecha_inicio_membresia_usuario", nullable = true)
     private String fecha_inicio_membresia;
 
-    @Column(name = "numero_tarjeta")
-    private int numero_tarjeta;
+    @Column(name = "numero_tarjeta", nullable = true)
+    private String numero_tarjeta;
 
     public int getId() {
         return id;
@@ -90,11 +90,11 @@ public class Usuario implements Serializable {
         this.fecha_inicio_membresia = fecha_inicio_membresia;
     }
 
-    public int getNumero_tarjeta() {
+    public String getNumero_tarjeta() {
         return numero_tarjeta;
     }
 
-    public void setNumero_tarjeta(int numero_tarjeta) {
+    public void setNumero_tarjeta(String numero_tarjeta) {
         this.numero_tarjeta = numero_tarjeta;
     }
 
