@@ -10,10 +10,10 @@ import java.io.Serializable;
 @Table(name = "usuario")
 public class Usuario implements Serializable {
     @Id
-    @Column(name = "id_usuario", unique = true)
+    @Column(name = "id_usuario", unique = true, nullable = false)
     private int id;
 
-    @Column(name = "correo_usuario", nullable = false)
+    @Column(name = "correo_usuario", nullable = false, unique = true)
     private String correo;
 
     @Column(name = "password_usuario", nullable = false)
@@ -22,16 +22,16 @@ public class Usuario implements Serializable {
     @Column(name = "nombre_usuario", nullable = false)
     private String nombre_usr;
 
-    @Column(name = "url_foto_usuario", nullable = true)
+    @Column(name = "url_foto_usuario")
     private String url_foto_usr;
 
     @Column(name = "cantidad_membresias_usuario", nullable = false)
     private int cantidad_membresias;
 
-    @Column(name = "fecha_inicio_membresia_usuario", nullable = true)
+    @Column(name = "fecha_inicio_membresia_usuario")
     private String fecha_inicio_membresia;
 
-    @Column(name = "numero_tarjeta", nullable = true)
+    @Column(name = "numero_tarjeta")
     private int numero_tarjeta;
 
     public int getId() {
