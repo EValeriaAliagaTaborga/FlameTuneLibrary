@@ -30,11 +30,13 @@ public class Database {
      * @param fecha_inicio_memb
      * @param nro_tarjeta
      */
-    public void create(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta) {
+    public String create(int id, String correo, String password, String nombre, String foto,
+                       int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta) {
         // Create an EntityManager
         System.out.println("Creando Usuario : " + nombre+ " id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
+        String w = "fail";
 
         try {
             // empieza transaccion
@@ -44,8 +46,8 @@ public class Database {
             Usuario usr = new Usuario();
             usr.setId(id);
             usr.setCorreo(correo);
-            usr.setNombre_usr(nombre);
             usr.setPassword(password);
+            usr.setNombre_usr(nombre);
             usr.setUrl_foto_usr(foto);
             usr.setCantidad_membresias(cantidad_memb);
             usr.setFecha_inicio_membresia(fecha_inicio_memb);
@@ -54,14 +56,18 @@ public class Database {
             manager.persist(usr);
             // envia transaccion
             transaction.commit();
+            w = "try";
         } catch (Exception ex) {
+            w = "execption: " + ex;
             if (transaction != null) {
+                w+="\nrollback()";
                 transaction.rollback();
             }
             ex.printStackTrace();
         } finally {
             manager.close();
         }
+        return w;
     }
 
     /**
@@ -81,7 +87,7 @@ public class Database {
             // Get a transaction
             transaction = manager.getTransaction();
             transaction.begin();
-            // Get Usuario
+            // Get Usuarios
             usuarios = manager.createQuery("SELECT s FROM Usuario s", Usuario.class).getResultList();
             transaction.commit();
         } catch (Exception ex) {
@@ -93,6 +99,17 @@ public class Database {
             manager.close();
         }
         return usuarios;
+    }
+
+    public Usuario getUser(int id){
+        List <Usuario> users = readAll();
+        Usuario us = null;
+        for(int i = 0; i < users.size();i++){
+            if(users.get(i).getId() == id){
+                us = users.get(i);
+            }
+        }
+        return us;
     }
 
     /**
