@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
@@ -89,6 +90,8 @@ public class Database {
             transaction.begin();
             // Get Usuarios
             usuarios = manager.createQuery("SELECT s FROM Usuario s", Usuario.class).getResultList();
+            // Get Usuario
+//            usuarios = manager.createQuery("SELECT s FROM usuario s", Usuario.class).getResultList();
             transaction.commit();
         } catch (Exception ex) {
             if (transaction != null) {
@@ -178,4 +181,41 @@ public class Database {
             manager.close();
         }
     }
+
+
+    public Usuario getUserLogin(String userName) {
+        // Create an EntityManager
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+
+        List<Usuario> listUser = new ArrayList<>();
+
+        String un = "\'"+userName+"\'";
+        String query = "select u from Usuario u where correo like " + un + " or nombre_usr like " + un;
+        System.out.println(query);
+        Usuario usr = null;
+
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            transaction.begin();
+            listUser = manager.createQuery(query, Usuario.class).getResultList();
+            if(listUser != null && !listUser.isEmpty()) {
+                usr = listUser.get(0);
+                transaction.commit();
+            } else {
+                usr = null;
+            }
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return usr;
+    }
+
 }

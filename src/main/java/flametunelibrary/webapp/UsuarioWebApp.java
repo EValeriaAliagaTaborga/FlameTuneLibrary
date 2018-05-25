@@ -5,9 +5,13 @@ import flametunelibrary.entity.Usuario;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Path("/usuarios")
 public class UsuarioWebApp {
+
 
     @POST
     @Path("/post")
@@ -175,6 +179,85 @@ public class UsuarioWebApp {
                 .header("Access-Control-Max-Age", "1209600")
                         //.entity(libro)
                 .build();
+    }
+
+    private static int intentos = 1;
+    private static int horaDesbloqueo = 0;
+    private static boolean bloqueado = false;
+    @GET
+    @Path("/login/{userName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@PathParam("userName") String userName, @QueryParam("password") String password) {
+
+        //String result = "Usuario Guardado : " + usr;
+        Database b = new Database();
+        Usuario user = b.getUserLogin(userName);
+
+
+        String result = "";
+
+        if(!bloqueado) {
+            if (user == null) {
+                //Correo o nombre de usuario inexistentes
+                result = "Usuario inexistente";
+
+            } else {
+                String passwordGuardada = user.getPassword();
+                if (password.equals(passwordGuardada)) {
+                    intentos = 1;
+                    result = "Login satisfactorio, acceso permitido";
+                } else {
+                    if (intentos > 3) {
+                        //bloqueado
+                        result = "Usuario bloqueado, por favor espere";
+
+                        Date date = new Date();
+                        DateFormat hourFormat = new SimpleDateFormat("HHmmss");
+                        horaDesbloqueo = Integer.parseInt(hourFormat.format(date))+100;
+                        bloqueado = true;
+                    } else {
+                        //login fallido
+                        intentos++;
+                        result = "Login fallido, password incorrecto";
+                    }
+                }
+            }
+        } else {
+            Date date2 = new Date();
+            DateFormat hourFormat2 = new SimpleDateFormat("HHmmss");
+            int horaActual = Integer.parseInt(hourFormat2.format(date2));
+
+//            int horaComprobacion = horaDesbloqueo-40;
+            if (horaActual < horaDesbloqueo){
+//              int tiempoRestante = horaComprobacion - horaActual;
+//               result = "Usuario bloqueado. Quedan "+tiempoRestante+" segundos\n ha"+horaActual;
+                result = "Usuario bloqueado, por favor espere";
+            } else {
+                bloqueado = false;
+                horaDesbloqueo = 0;
+                intentos = 1;
+            }
+        }
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity(result)
+                .build();
+
+    }
+
+
+
+
+    @GET()
+    @Path("/loginPrueba")
+    public String prueba() {
+        return  "Algo";
     }
 
 }

@@ -19,7 +19,7 @@ public class Usuario implements Serializable {
     @Column(name = "password_usuario", nullable = false)
     private String password;
 
-    @Column(name = "nombre_usuario", nullable = false)
+    @Column(name = "nombre_usuario", nullable = false, unique = true)
     private String nombre_usr;
 
     @Column(name = "url_foto_usuario", nullable = true)
@@ -33,6 +33,8 @@ public class Usuario implements Serializable {
 
     @Column(name = "numero_tarjeta", nullable = true)
     private String numero_tarjeta;
+
+
 
     public int getId() {
         return id;
@@ -97,6 +99,7 @@ public class Usuario implements Serializable {
     public void setNumero_tarjeta(String numero_tarjeta) {
         this.numero_tarjeta = numero_tarjeta;
     }
+
 
     @Override
     public String toString() {
