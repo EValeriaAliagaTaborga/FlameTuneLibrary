@@ -69,6 +69,8 @@ public class UsuarioWebApp {
 */
 
 
+
+
     @PUT
     @Path("/put/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -107,6 +109,16 @@ public class UsuarioWebApp {
                 .header("Access-Control-Max-Age", "1209600")
                         //.entity(libro)
                 .build();
+    }
+
+
+    @GET
+    @Path("/get/{id}")
+    public String getABook(@PathParam("id") int id){
+        Database b = new Database();
+        Usuario usr = b.getUser(id);
+
+        return usr.toString();
     }
 
 }
