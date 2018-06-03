@@ -188,7 +188,6 @@ public class Database {
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
-
         List<Usuario> listUser = new ArrayList<>();
 
         String un = "\'"+userName+"\'";
