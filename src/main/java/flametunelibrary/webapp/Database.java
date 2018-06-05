@@ -220,7 +220,6 @@ public class Database {
 
 
 
-
     public String createPlaylist(int id_playlist, String nombre_playlist, int tipo_acceso_playlist) {
         // Create an EntityManager
         System.out.println("Creando Playlist : " + nombre_playlist+ " id : "+id_playlist);
