@@ -1,5 +1,6 @@
 package flametunelibrary.webapp;
 
+import flametunelibrary.entity.Playlist;
 import flametunelibrary.entity.Usuario;
 
 import javax.persistence.EntityManager;
@@ -215,6 +216,42 @@ public class Database {
             manager.close();
         }
         return usr;
+    }
+
+
+
+    public String createPlaylist(int id_playlist, String nombre_playlist, int tipo_acceso_playlist) {
+        // Create an EntityManager
+        System.out.println("Creando Playlist : " + nombre_playlist+ " id : "+id_playlist);
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        String w = "fail";
+
+        try {
+            // empieza transaccion
+            transaction = manager.getTransaction();
+            transaction.begin();
+            // crea objeto
+            Playlist pl = new Playlist();
+            pl.setId_playlist(id_playlist);
+            pl.setNombre_playlist(nombre_playlist);
+            pl.setTipo_acceso_playlist(tipo_acceso_playlist);
+            // guarda playlist persistentemente
+            manager.persist(pl);
+            // envia transaccion
+            transaction.commit();
+            w = "try";
+        } catch (Exception ex) {
+            w = "execption: " + ex;
+            if (transaction != null) {
+                w+="\nrollback()";
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return w;
     }
 
 
