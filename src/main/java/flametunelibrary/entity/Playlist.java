@@ -48,4 +48,5 @@ public class Playlist implements Serializable {
         return id_playlist + "\t" + nombre_playlist + "\t" + tipo_acceso_playlist;
     }
 
+
 }
