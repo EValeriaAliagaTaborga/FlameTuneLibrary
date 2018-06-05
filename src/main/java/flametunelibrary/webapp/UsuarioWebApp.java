@@ -5,6 +5,9 @@ import flametunelibrary.entity.Usuario;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +15,48 @@ import java.util.Date;
 @Path("/usuarios")
 public class UsuarioWebApp {
 
+    private boolean[] checks (Usuario usr){
+        boolean[] res = new boolean[5];
+
+        String password = usr.getPassword();
+        char[] pass = password.toCharArray();
+        int size = password.length();
+        boolean inSize = size > 7;
+        boolean inName = !password.contains(usr.getNombre_usr());
+        boolean check1 = true;
+        boolean check2 = true;
+        boolean check3 = true;
+        boolean mayus = false;
+        boolean symbol = false;
+        boolean number = false;
+
+        for (int i =0;i<size;i++){
+            if(Character.isUpperCase(pass[i]) && check1){
+                    mayus = true;
+                    check1 = false;
+            }
+            if(!Character.isLetterOrDigit(pass[i]) && check2){
+                    symbol = true;
+                    check2 = false;
+            }
+            if(Character.isDigit(pass[i]) && check3){
+                    number = true;
+                    check3 = false;
+            }
+            if(!check1 && !check2 && !check3){
+                    break;
+            }
+        }
+
+        res[0]=inSize;
+        res[1]=inName;
+        res[2]=mayus;
+        res[3]=symbol;
+        res[4]=number;
+
+        return res;
+
+    }
 
     @POST
     @Path("/post")
@@ -37,41 +82,20 @@ public class UsuarioWebApp {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(Usuario usr) {
-        String password = usr.getPassword();
-        char[] pass = password.toCharArray();
-        int size = password.length();
-        boolean inSize = size > 7;
-        boolean inName = !password.contains(usr.getNombre_usr());
-        boolean check1 = true;
-        boolean check2 = true;
-        boolean check3 = true;
-        boolean mayus = false;
-        boolean symbol = false;
-        boolean number = false;
+        
+        boolean[] res = checks(usr);
 
-        for (int i =0;i<size;i++){
-                if(!Character.isLowerCase(pass[i]) && check1){
-                        mayus = true;
-                        check1 = false;
-                }
-                if(!Character.isLetterOrDigit(pass[i]) && check2){
-                        symbol = true;
-                        check2 = false;
-                }
-                if(Character.isDigit(pass[i]) && check3){
-                        number = true;
-                        check3 = false;
-                }
-                if(!check1 && !check2 && !check3){
-                        break;
-                }
-        }
+        boolean inSize = res[0];
+        boolean inName = res[1];
+        boolean mayus = res[2];
+        boolean symbol = res[3];
+        boolean number = res[4];
 
         if(mayus && symbol && inSize && inName && number) {
                 Database b = new Database();
-                b.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
-                 usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta());
-                String myjson = "User created";
+                
+                String myjson = "User created: " + b.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
+                usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta());;
                 return Response
                         .status(200)
                         .header("Access-Control-Allow-Origin", "*")
