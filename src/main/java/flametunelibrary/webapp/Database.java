@@ -307,7 +307,7 @@ public class Database {
     }
 
 
-    public String deletePlaylist(int id) {
+   /* public String deletePlaylist(int id) {
         // Create an EntityManager
         System.out.println("eliminar Playlist: "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -347,6 +347,6 @@ public class Database {
 
         return res;
 
-    }
+    }*/
 
 }
