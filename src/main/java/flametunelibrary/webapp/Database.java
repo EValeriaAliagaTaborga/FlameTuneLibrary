@@ -306,12 +306,14 @@ public class Database {
         }
     }
 
+
     public String deletePlaylist(int id) {
         // Create an EntityManager
         System.out.println("eliminar Playlist: "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         List<UsuarioPlaylist> uplist = new ArrayList<UsuarioPlaylist>();
+
         String query = "select up from UsuarioPlaylist up where up.id_playlist=" + id;
         String res = "";
 
