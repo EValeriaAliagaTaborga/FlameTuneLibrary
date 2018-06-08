@@ -314,7 +314,7 @@ public class Database {
         EntityTransaction transaction = null;
         List<UsuarioPlaylist> uplist = new ArrayList<UsuarioPlaylist>();
 
-        String query = "select up from UsuarioPlaylist up where up.id_playlist=" + id;
+        String query = "SELECT up FROM UsuarioPlaylist up WHERE up.id_playlist=" + id;
         String res = "";
 
         try {

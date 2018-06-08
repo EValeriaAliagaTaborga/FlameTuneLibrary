@@ -9,8 +9,14 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- Entity classes -->
 		<class>flametunelibrary.entity.Usuario</class>
+        <class>flametunelibrary.entity.UsuarioPlaylist</class>
+        <class>flametunelibrary.entity.Playlist</class>
+        <class>flametunelibrary.entity.Cancion</class>
+        <class>flametunelibrary.entity.PlaylistCancion</class>
 
-		<properties>
+
+
+        <properties>
 
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
