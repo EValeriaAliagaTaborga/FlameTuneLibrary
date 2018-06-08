@@ -1,5 +1,6 @@
 package flametunelibrary.webapp;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import flametunelibrary.entity.Playlist;
 import flametunelibrary.entity.Usuario;
 
@@ -33,7 +34,7 @@ public class Database {
      * @param nro_tarjeta
      */
     public String create(int id, String correo, String password, String nombre, String foto,
-                       int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta) {
+                       int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta, boolean logged) {
         // Create an EntityManager
         System.out.println("Creando Usuario : " + nombre+ " id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -54,6 +55,7 @@ public class Database {
             usr.setCantidad_membresias(cantidad_memb);
             usr.setFecha_inicio_membresia(fecha_inicio_memb);
             usr.setNumero_tarjeta(nro_tarjeta);
+            usr.setLogged(logged);
             // guarda usuario persistentemente
             manager.persist(usr);
             // envia transaccion
@@ -85,14 +87,13 @@ public class Database {
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
 
+
         try {
             // Get a transaction
             transaction = manager.getTransaction();
             transaction.begin();
             // Get Usuarios
             usuarios = manager.createQuery("SELECT s FROM Usuario s", Usuario.class).getResultList();
-            // Get Usuario
-//            usuarios = manager.createQuery("SELECT s FROM usuario s", Usuario.class).getResultList();
             transaction.commit();
         } catch (Exception ex) {
             if (transaction != null) {
@@ -106,12 +107,32 @@ public class Database {
     }
 
     public Usuario getUser(int id){
-        List <Usuario> users = readAll();
+        //List <Usuario> users = readAll();
         Usuario us = null;
+        /*
         for(int i = 0; i < users.size();i++){
             if(users.get(i).getId() == id){
                 us = users.get(i);
             }
+        }
+        */
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            transaction.begin();
+            // Get Usuarios
+            us = manager.find(Usuario.class, id);
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
         }
         return us;
     }
@@ -153,7 +174,7 @@ public class Database {
      * @param fecha_inicio_memb
      * @param nro_tarjeta
      */
-    public void update(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta) {
+    public void update(int id, String correo, String password, String nombre, String foto, int cantidad_memb, String fecha_inicio_memb, String nro_tarjeta,boolean logged) {
         // Create an EntityManager
         System.out.println("Actualizando Usuario : "+nombre+ " con id : "+id);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -170,6 +191,7 @@ public class Database {
             usr.setCantidad_membresias(cantidad_memb);
             usr.setFecha_inicio_membresia(fecha_inicio_memb);
             usr.setNumero_tarjeta(nro_tarjeta);
+            usr.setLogged(logged);
             manager.persist(usr);
             // envia transaccion
             transaction.commit();
@@ -219,8 +241,7 @@ public class Database {
     }
 
 
-
-    public String createPlaylist(int id_playlist, String nombre_playlist, int tipo_acceso_playlist) {
+    public String createPlaylist(int id_playlist, String nombre_playlist, boolean tipo_acceso_playlist) {
         // Create an EntityManager
         System.out.println("Creando Playlist : " + nombre_playlist+ " id : "+id_playlist);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();

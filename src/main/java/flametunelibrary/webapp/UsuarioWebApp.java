@@ -15,6 +15,7 @@ import java.util.Date;
 @Path("/usuarios")
 public class UsuarioWebApp {
 
+
     private boolean[] checks (Usuario usr){
         boolean[] res = new boolean[5];
 
@@ -65,7 +66,7 @@ public class UsuarioWebApp {
     public Response createTrackInJSON(Usuario usr) {
         Database db = new Database();
         String cr = db.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
-                 usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta());
+                 usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(), usr.isLogged());
         return Response
                 .status(200)
                 .header("Access-Control-Allow-Origin", "*")
@@ -95,7 +96,7 @@ public class UsuarioWebApp {
                 Database b = new Database();
                 
                 String myjson = "User created: " + b.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
-                usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta());;
+                usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(),usr.isLogged());
                 return Response
                         .status(200)
                         .header("Access-Control-Allow-Origin", "*")
@@ -182,8 +183,8 @@ public class UsuarioWebApp {
             Database b = new Database();
 
             b.update(id, usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
-                    usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta());
-            ;
+                    usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(),usr.isLogged());
+
             return Response
                     .status(200)
                     .header("Access-Control-Allow-Origin", "*")
@@ -222,7 +223,7 @@ public class UsuarioWebApp {
                 .header("Access-Control-Allow-Credentials", "true")
                 .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
                 .header("Access-Control-Max-Age", "1209600")
-                        //.entity(libro)
+                .entity("Usuario eliminado")
                 .build();
     }
 
@@ -252,6 +253,8 @@ public class UsuarioWebApp {
                 if (password.equals(passwordGuardada)) {
                     intentos = 1;
                     result = "Login satisfactorio, acceso permitido";
+                    b.update(user.getId(), user.getCorreo(), user.getPassword(), user.getNombre_usr(), user.getUrl_foto_usr(),
+                            user.getCantidad_membresias(), user.getFecha_inicio_membresia(), user.getNumero_tarjeta(), true);
                 } else {
                     if (intentos > 3) {
                         //bloqueado
@@ -305,6 +308,24 @@ public class UsuarioWebApp {
         return  "Algo";
     }
 
+
+    @GET
+    @Path("/logout/{userName}")
+    public Response logout(@PathParam("userName") String userName) {
+        Database db = new Database();
+        Usuario user = db.getUserLogin(userName);
+        db.update(user.getId(), user.getCorreo(), user.getPassword(), user.getNombre_usr(), user.getUrl_foto_usr(),
+                user.getCantidad_membresias(), user.getFecha_inicio_membresia(), user.getNumero_tarjeta(), false);
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity("Sesion cerrada")
+                .build();
+    }
 
 
 }

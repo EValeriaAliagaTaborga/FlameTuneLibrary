@@ -10,7 +10,9 @@ import java.io.Serializable;
 @Table(name = "usuario")
 public class Usuario implements Serializable {
     @Id
-    @Column(name = "id_usuario", unique = true, nullable = false)
+    //Si no funciona el autoincrement
+    //@Column(name = "id_usuario", unique = true, nullable = false)
+    @Column(name = "id_usuario", unique = true)
     private int id;
 
     @Column(name = "correo_usuario", nullable = false, unique = true)
@@ -22,18 +24,20 @@ public class Usuario implements Serializable {
     @Column(name = "nombre_usuario", nullable = false, unique = true)
     private String nombre_usr;
 
-    @Column(name = "url_foto_usuario", nullable = true)
+    @Column(name = "url_foto_usuario")
     private String url_foto_usr;
 
     @Column(name = "cantidad_membresias_usuario", nullable = false)
     private int cantidad_membresias;
 
-    @Column(name = "fecha_inicio_membresia_usuario", nullable = true)
+    @Column(name = "fecha_inicio_membresia_usuario")
     private String fecha_inicio_membresia;
 
-    @Column(name = "numero_tarjeta", nullable = true)
+    @Column(name = "numero_tarjeta")
     private String numero_tarjeta;
 
+    @Column(name = "logged", nullable = false)
+    private boolean logged;
 
 
     public int getId() {
@@ -100,10 +104,17 @@ public class Usuario implements Serializable {
         this.numero_tarjeta = numero_tarjeta;
     }
 
+    public boolean isLogged() {
+        return logged;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
+    }
 
     @Override
     public String toString() {
         return id + "\t" + correo + "\t" + password + "\t" + nombre_usr + "\t" + url_foto_usr
-                + "\t" + cantidad_membresias + "\t" + fecha_inicio_membresia + "\t" + numero_tarjeta;
+                + "\t" + cantidad_membresias + "\t" + fecha_inicio_membresia + "\t" + numero_tarjeta + "\t" + logged;
     }
 }

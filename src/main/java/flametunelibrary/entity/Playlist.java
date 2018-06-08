@@ -10,14 +10,16 @@ import java.io.Serializable;
 @Table(name = "playlist")
 public class Playlist implements Serializable {
     @Id
-    @Column(name = "id_playlist", unique = true, nullable = false)
+   //Si no funciona el autoincrement
+   //@Column(name = "id_playlist", unique = true, nullable = false)
+    @Column(name = "id_playlist", unique = true)
     private int id_playlist;
 
-    @Column(name = "nombre_playlist", nullable = false)
+    @Column(name = "nombre_playlist", nullable = false, unique = true)
     private String nombre_playlist;
 
-    @Column(name = "tipo_acceso_playlist")
-    private int tipo_acceso_playlist;
+    @Column(name = "tipo_acceso_playlist", nullable = false)
+    private boolean tipo_acceso_playlist;
 
     public int getId_playlist() {
         return id_playlist;
@@ -35,11 +37,11 @@ public class Playlist implements Serializable {
         this.nombre_playlist = nombre_playlist;
     }
 
-    public int getTipo_acceso_playlist() {
+    public boolean getTipo_acceso_playlist() {
         return tipo_acceso_playlist;
     }
 
-    public void setTipo_acceso_playlist(int tipo_acceso_playlist) {
+    public void setTipo_acceso_playlist(boolean tipo_acceso_playlist) {
         this.tipo_acceso_playlist = tipo_acceso_playlist;
     }
 
