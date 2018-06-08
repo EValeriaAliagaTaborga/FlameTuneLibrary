@@ -28,7 +28,7 @@ public class Main {
 
        // System.out.print(db.readAll());
 
-        //System.out.print(db.deletePlaylist(3));
+        System.out.print(db.deletePlaylist(3));
 
     }
 

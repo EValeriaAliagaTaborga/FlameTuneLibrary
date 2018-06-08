@@ -320,8 +320,8 @@ public class Database {
         try {
             transaction = manager.getTransaction();
             transaction.begin();
-            //uplist = manager.createQuery(query, UsuarioPlaylist.class).getResultList();
-            uplist = manager.createQuery(query).getResultList();
+            uplist = manager.createQuery(query, UsuarioPlaylist.class).getResultList();
+            //uplist = manager.createQuery(query).getResultList();
             res+="query: " + query + "\n";
             res+="uplist: "+uplist.toString()+"\n";
             if(!uplist.isEmpty()) {

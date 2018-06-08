@@ -33,19 +33,19 @@ public class UsuarioWebApp {
 
         for (int i =0;i<size;i++){
             if(Character.isUpperCase(pass[i]) && check1){
-                    mayus = true;
-                    check1 = false;
+                mayus = true;
+                check1 = false;
             }
             if(!Character.isLetterOrDigit(pass[i]) && check2){
-                    symbol = true;
-                    check2 = false;
+                symbol = true;
+                check2 = false;
             }
             if(Character.isDigit(pass[i]) && check3){
-                    number = true;
-                    check3 = false;
+                number = true;
+                check3 = false;
             }
             if(!check1 && !check2 && !check3){
-                    break;
+                break;
             }
         }
 
@@ -66,7 +66,7 @@ public class UsuarioWebApp {
     public Response createTrackInJSON(Usuario usr) {
         Database db = new Database();
         String cr = db.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
-                 usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(), usr.isLogged());
+                usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(), usr.isLogged());
         return Response
                 .status(200)
                 .header("Access-Control-Allow-Origin", "*")
@@ -83,7 +83,7 @@ public class UsuarioWebApp {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(Usuario usr) {
-        
+
         boolean[] res = checks(usr);
 
         boolean inSize = res[0];
@@ -93,43 +93,43 @@ public class UsuarioWebApp {
         boolean number = res[4];
 
         if(mayus && symbol && inSize && inName && number) {
-                Database b = new Database();
-                
-                String myjson = "User created: " + b.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
-                usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(),usr.isLogged());
-                return Response
-                        .status(200)
-                        .header("Access-Control-Allow-Origin", "*")
-                        .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                        .header("Access-Control-Allow-Credentials", "true")
-                        .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                        .header("Access-Control-Max-Age", "1209600")
-                        .entity(myjson)
-                        .build();
+            Database b = new Database();
+
+            String myjson = "User created: " + b.create(usr.getId(), usr.getCorreo(), usr.getPassword(), usr.getNombre_usr(), usr.getUrl_foto_usr(),
+                    usr.getCantidad_membresias(), usr.getFecha_inicio_membresia(), usr.getNumero_tarjeta(),usr.isLogged());
+            return Response
+                    .status(200)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                    .header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                    .header("Access-Control-Max-Age", "1209600")
+                    .entity(myjson)
+                    .build();
         } else {
-                String[] myjson = {"Have Caps:"+mayus,"Have symbols: "+symbol,
-                        "Larger than 8: "+inSize,"Password have name: "+!inName,"Have numbers: "+number
-                        ,"password incorrect"};
-                return Response
-                        .status(403)
-                        .header("Access-Control-Allow-Origin", "*")
-                        .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                        .header("Access-Control-Allow-Credentials", "true")
-                        .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                        .header("Access-Control-Max-Age", "1209600")
-                        .entity(myjson)
-                        .build();
-                        
+            String[] myjson = {"Have Caps:"+mayus,"Have symbols: "+symbol,
+                    "Larger than 8: "+inSize,"Password have name: "+!inName,"Have numbers: "+number
+                    ,"password incorrect"};
+            return Response
+                    .status(403)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                    .header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                    .header("Access-Control-Max-Age", "1209600")
+                    .entity(myjson)
+                    .build();
+
         }
     }
 
     @GET()
     @Path("/get/{user}")
-    public String getUsuariosUrl(@PathParam("user") int user){
+    public Usuario getUsuariosUrl(@PathParam("user") int user){
         Database d = new Database();
 
         Usuario usr = d.getUser(user);
-        return usr.toString();
+        return usr;
         /*new Usuario();
         usr.setId(1);
         usr.setCorreo("example123@mail.com");
