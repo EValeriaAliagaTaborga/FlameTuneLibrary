@@ -306,5 +306,44 @@ public class Database {
         }
     }
 
+    public String deletePlaylist(int id) {
+        // Create an EntityManager
+        System.out.println("eliminar Playlist: "+id);
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        List<UsuarioPlaylist> uplist = new ArrayList<UsuarioPlaylist>();
+        String query = "select up from UsuarioPlaylist up where up.id_playlist=" + id;
+        String res = "";
+
+        try {
+            transaction = manager.getTransaction();
+            transaction.begin();
+            //uplist = manager.createQuery(query, UsuarioPlaylist.class).getResultList();
+            uplist = manager.createQuery(query).getResultList();
+            res+="query: " + query + "\n";
+            res+="uplist: "+uplist.toString()+"\n";
+            if(!uplist.isEmpty()) {
+                for(UsuarioPlaylist userPl : uplist){
+                    manager.remove(userPl);
+                    res+="algo ";
+                }
+            } else {
+                res+="vacio ";
+            }
+            Playlist pl = manager.find(Playlist.class, id);
+            manager.remove(pl);
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+            res+="nada";
+        } finally {
+            manager.close();
+        }
+
+        return res;
+    }
 
 }
