@@ -55,7 +55,7 @@ public class PlaylistWebApp {
 
 
 
-  /*  @DELETE
+    @DELETE
     @Path("/delete/{id_pl}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +74,6 @@ public class PlaylistWebApp {
     }
 
 
-*/
+
 
 }
