@@ -1,8 +1,8 @@
 package flametunelibrary.webapp;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import flametunelibrary.entity.Playlist;
 import flametunelibrary.entity.Usuario;
+import flametunelibrary.entity.UsuarioPlaylist;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -241,7 +241,7 @@ public class Database {
     }
 
 
-    public String createPlaylist(int id_playlist, String nombre_playlist, boolean tipo_acceso_playlist) {
+    public String createPlaylist(int id_playlist, String nombre_playlist, boolean tipo_acceso_playlist, int id_user) {
         // Create an EntityManager
         System.out.println("Creando Playlist : " + nombre_playlist+ " id : "+id_playlist);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -259,6 +259,11 @@ public class Database {
             pl.setTipo_acceso_playlist(tipo_acceso_playlist);
             // guarda playlist persistentemente
             manager.persist(pl);
+            // aniadir relacion entre usuario y playlist
+            UsuarioPlaylist userPlaylist = new UsuarioPlaylist();
+            userPlaylist.setId_user(id_user);
+            userPlaylist.setId_playlist(id_playlist);
+            manager.persist(userPlaylist);
             // envia transaccion
             transaction.commit();
             w = "try";
@@ -273,6 +278,32 @@ public class Database {
             manager.close();
         }
         return w;
+    }
+
+
+
+    public void updatePlaylist(int id, String nombre_playlist, boolean tipo_acceso_playlist) {
+        System.out.println("Actualizando Playlist : "+ nombre_playlist + " con id : "+id);
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+        try {
+            transaction = manager.getTransaction();
+            transaction.begin();
+            Playlist pl = manager.find(Playlist.class, id);
+            pl.setNombre_playlist(nombre_playlist);
+            pl.setTipo_acceso_playlist(tipo_acceso_playlist);
+            manager.persist(pl);
+            // envia transaccion
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
     }
 
 

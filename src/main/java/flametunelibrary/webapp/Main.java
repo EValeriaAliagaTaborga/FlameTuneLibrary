@@ -17,7 +17,7 @@ public class Main {
         //System.out.println(db.getUserLogin("nombre"));
         //System.out.println(db.getUserLogin("nombre10"));
         //List<Usuario> users = db.readAll();
-        Usuario us = null;
+        //Usuario us = null;
         /*
         System.out.print("yolo:"+users.toString());
         for(int i = 0; i < users.size();i++){
@@ -26,8 +26,9 @@ public class Main {
             }
         }*/
 
-        System.out.print(db.readAll());
+       // System.out.print(db.readAll());
 
+        //System.out.print(db.deletePlaylist(3));
 
     }
 

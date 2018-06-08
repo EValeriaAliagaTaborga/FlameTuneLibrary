@@ -252,7 +252,8 @@ public class UsuarioWebApp {
                 String passwordGuardada = user.getPassword();
                 if (password.equals(passwordGuardada)) {
                     intentos = 1;
-                    result = "Login satisfactorio, acceso permitido";
+                    //result = "Login satisfactorio, acceso permitido";
+                    result = user.getId()+"";
                     b.update(user.getId(), user.getCorreo(), user.getPassword(), user.getNombre_usr(), user.getUrl_foto_usr(),
                             user.getCantidad_membresias(), user.getFecha_inicio_membresia(), user.getNumero_tarjeta(), true);
                 } else {

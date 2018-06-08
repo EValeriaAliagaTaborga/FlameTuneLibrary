@@ -117,4 +117,5 @@ public class Usuario implements Serializable {
         return id + "\t" + correo + "\t" + password + "\t" + nombre_usr + "\t" + url_foto_usr
                 + "\t" + cantidad_membresias + "\t" + fecha_inicio_membresia + "\t" + numero_tarjeta + "\t" + logged;
     }
+
 }
