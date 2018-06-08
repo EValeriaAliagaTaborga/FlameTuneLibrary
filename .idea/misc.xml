@@ -37,12 +37,11 @@
   <component name="GradleLocalSettings">
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$/../FlameTune" value="3053653486869" />
-        <entry key="$PROJECT_DIR$" value="3054354637787" />
+        <entry key="$PROJECT_DIR$" value="3056481101192" />
       </map>
     </option>
   </component>
-  <component name="IdProvider" IDEtalkID="ABE134A8F9501C41146D15BEF3617133" />
+  <component name="IdProvider" IDEtalkID="CDDD0CB77432A9A504F2D94C947926DC" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -56,7 +55,7 @@
   <component name="ProjectModuleManager">
     <modules />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="PropertiesComponent">
