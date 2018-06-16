@@ -13,6 +13,7 @@
         <class>flametunelibrary.entity.Playlist</class>
         <class>flametunelibrary.entity.Cancion</class>
         <class>flametunelibrary.entity.PlaylistCancion</class>
+        <class>flametunelibrary.entity.Tarjeta</class>
 
 
         <properties>

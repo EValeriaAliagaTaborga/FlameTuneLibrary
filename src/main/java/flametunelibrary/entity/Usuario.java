@@ -10,8 +10,6 @@ import java.io.Serializable;
 @Table(name = "usuario")
 public class Usuario implements Serializable {
     @Id
-    //Si no funciona el autoincrement
-    //@Column(name = "id_usuario", unique = true, nullable = false)
     @Column(name = "id_usuario", unique = true)
     private int id;
 

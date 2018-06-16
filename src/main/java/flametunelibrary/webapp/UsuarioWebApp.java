@@ -1,5 +1,6 @@
 package flametunelibrary.webapp;
 
+import flametunelibrary.entity.Tarjeta;
 import flametunelibrary.entity.Usuario;
 
 import javax.ws.rs.*;
@@ -327,6 +328,29 @@ public class UsuarioWebApp {
                 .entity("Sesion cerrada")
                 .build();
     }
+
+
+
+    @POST
+    @Path("/createTarjeta/{id_user}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createTarjeta(@PathParam("id_user") int id_user, Tarjeta trj) {
+        Database db = new Database();
+        String cr = db.createTarjeta(trj.getNro_tarjeta(), trj.getCvc_tarjeta(), trj.getFecha_vencimiento_tarjeta(),trj.getTipo_tarjeta(), trj.getPais_tarjeta(),trj.getNombre_usuario_tarjeta(),id_user);
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity(cr)
+                .build();
+    }
+
+
+
 
 
 }

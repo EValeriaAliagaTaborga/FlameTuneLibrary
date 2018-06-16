@@ -1,9 +1,6 @@
 package flametunelibrary.webapp;
 
-import flametunelibrary.entity.Cancion;
-import flametunelibrary.entity.Playlist;
-import flametunelibrary.entity.Usuario;
-import flametunelibrary.entity.UsuarioPlaylist;
+import flametunelibrary.entity.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -429,4 +426,43 @@ public class Database {
             manager.close();
         }
         return canciones;    }
+
+    public String createTarjeta(String nro_tarjeta, int cvc_tarjeta, String fecha_vencimiento_tarjeta, String tipo_tarjeta, String pais_tarjeta, String nombre_usuario_tarjeta, int id_user) {
+        System.out.println("Creando Tarjeta : " + nro_tarjeta);
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        String w = "fail";
+
+        try {
+            // empieza transaccion
+            transaction = manager.getTransaction();
+            transaction.begin();
+            // crear objeto
+            Tarjeta trj = new Tarjeta();
+            trj.setNro_tarjeta(nro_tarjeta);
+            trj.setCvc_tarjeta(cvc_tarjeta);
+            trj.setFecha_vencimiento_tarjeta(fecha_vencimiento_tarjeta);
+            trj.setTipo_tarjeta(tipo_tarjeta);
+            trj.setPais_tarjeta(pais_tarjeta);
+            trj.setNombre_usuario_tarjeta(nombre_usuario_tarjeta);
+            // guarda playlist persistentemente
+            manager.persist(trj);
+            // envia transaccion
+            transaction.commit();
+            w = "try";
+        } catch (Exception ex) {
+            w = "execption: " + ex;
+            if (transaction != null) {
+                w+="\nrollback()";
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return w;
+
+    }
+
+
 }
