@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Path("/playlist")
 public class PlaylistWebApp {
@@ -74,6 +75,31 @@ public class PlaylistWebApp {
     }
 
 
+
+    @GET()
+    @Path("/getList")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+
+    //public List<Playlist> getPlaylist(){
+    public Response getPlaylist(){
+
+        Database db = new Database();
+
+        List<Playlist> listPlaylist = db.getListPlaylist();
+       // return listPlaylist;
+
+
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity(listPlaylist)
+                .build();
+    }
 
 
 }

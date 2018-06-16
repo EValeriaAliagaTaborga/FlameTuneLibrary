@@ -15,7 +15,6 @@
         <class>flametunelibrary.entity.PlaylistCancion</class>
 
 
-
         <properties>
 
             <property name="hibernate.archive.autodetection" value="class" />

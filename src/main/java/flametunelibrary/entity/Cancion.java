@@ -10,13 +10,13 @@ import java.io.Serializable;
 @Table(name = "cancion")
 public class Cancion implements Serializable {
     @Id
-    @Column(name = "id_cancion", unique = true, nullable = false)
+    @Column(name = "id_cancion", unique = true)
     private int id_cancion;
 
     @Column(name = "nombre_cancion", nullable = false)
     private String nombre_cancion;
 
-    @Column(name = "genero_cancion")
+    @Column(name = "genero_cancion", nullable = false)
     private String genero;
 
     @Column(name = "artista_cancion", nullable = false)
@@ -25,7 +25,7 @@ public class Cancion implements Serializable {
     @Column(name = "album_cancion")
     private String album;
 
-    @Column(name = "anio_cancion")
+    @Column(name = "anio_cancion", nullable = false)
     private int anio_cancion;
 
     @Column(name = "ranking_general_cancion")

@@ -1,5 +1,6 @@
 package flametunelibrary.webapp;
 
+import flametunelibrary.entity.Cancion;
 import flametunelibrary.entity.Playlist;
 import flametunelibrary.entity.Usuario;
 import flametunelibrary.entity.UsuarioPlaylist;
@@ -349,4 +350,83 @@ public class Database {
 
     }
 
+    public List<Playlist> getListPlaylist() {
+        List<Playlist> playlists = null;
+
+        // Create an EntityManager
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            transaction.begin();
+            // Get Playlists
+            playlists = manager.createQuery("SELECT pl FROM Playlist pl", Playlist.class).getResultList();
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return playlists;
+    }
+
+    public Cancion getCancion(int idCancion) {
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        //String e = "";
+        Cancion cnn = null;
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            transaction.begin();
+            // Get Cancion
+            cnn = manager.find(Cancion.class, idCancion);
+            transaction.commit();
+            //e+="inTry";
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+            //e+="inCatch:er: "+ex+"\n";
+        } finally {
+            //e+="inFinally";
+            manager.close();
+        }
+        return cnn;
+    }
+
+
+    public List<Cancion> search(String texto) {
+
+        // Create an EntityManager
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+
+        List<Cancion> canciones = null;
+
+        String txt = "\'%"+texto+"%\'";
+        String query = "SELECT c FROM Cancion c where id_cancion like "+ txt + " or genero like "+txt + " or artista like" + txt + " or album like "+txt ;
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            transaction.begin();
+            // Get Playlists
+            canciones = manager.createQuery(query, Cancion.class).getResultList();
+            transaction.commit();
+        } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return canciones;    }
 }
