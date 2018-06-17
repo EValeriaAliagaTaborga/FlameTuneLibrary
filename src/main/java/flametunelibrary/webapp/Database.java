@@ -1,9 +1,6 @@
 package flametunelibrary.webapp;
 
-import flametunelibrary.entity.Cancion;
-import flametunelibrary.entity.Playlist;
-import flametunelibrary.entity.Usuario;
-import flametunelibrary.entity.UsuarioPlaylist;
+import flametunelibrary.entity.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -412,7 +409,7 @@ public class Database {
         List<Cancion> canciones = null;
 
         String txt = "\'%"+texto+"%\'";
-        String query = "SELECT c FROM Cancion c where id_cancion like "+ txt + " or genero like "+txt + " or artista like" + txt + " or album like "+txt ;
+        String query = "SELECT c FROM Cancion c where nombre_cancion like "+ txt + " or genero like "+txt + " or artista like" + txt + " or album like "+txt ;
         try {
             // Get a transaction
             transaction = manager.getTransaction();
@@ -429,4 +426,85 @@ public class Database {
             manager.close();
         }
         return canciones;    }
+
+    public String createTarjeta(String nro_tarjeta, int cvc_tarjeta, String fecha_vencimiento_tarjeta, String tipo_tarjeta, String pais_tarjeta, String nombre_usuario_tarjeta, int id_user) {
+        System.out.println("Creando Tarjeta : " + nro_tarjeta);
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        String w = "fail";
+
+        try {
+            // empieza transaccion
+            transaction = manager.getTransaction();
+            transaction.begin();
+            //verificar existencia de tarjeta
+            Tarjeta trj = manager.find(Tarjeta.class, nro_tarjeta);
+            if(trj == null) {
+                // crear objeto
+                trj = new Tarjeta();
+                trj.setNro_tarjeta(nro_tarjeta);
+                trj.setCvc_tarjeta(cvc_tarjeta);
+                trj.setFecha_vencimiento_tarjeta(fecha_vencimiento_tarjeta);
+                trj.setTipo_tarjeta(tipo_tarjeta);
+                trj.setPais_tarjeta(pais_tarjeta);
+                trj.setNombre_usuario_tarjeta(nombre_usuario_tarjeta);
+                // guarda tarjeta persistentemente
+                manager.persist(trj);
+            }
+            //aniadir tarjeta a usuario
+            Usuario user = manager.find(Usuario.class, id_user);
+            user.setNumero_tarjeta(nro_tarjeta);
+            // envia transaccion
+            transaction.commit();
+            w = "try";
+        } catch (Exception ex) {
+            w = "execption: " + ex;
+            if (transaction != null) {
+                w+="\nrollback()";
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return w;
+
+    }
+
+
+    public String comprarMembresiaUsuario(int id_user, int cantidadMembresias, String fecha) {
+        System.out.println("Aniadiendo : " + cantidadMembresias + " membresias al usuario " + id_user);
+
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        String w = "fail";
+
+        try {
+            // empieza transaccion
+            transaction = manager.getTransaction();
+            transaction.begin();
+            //aniadir datos membresia
+            Usuario user = manager.find(Usuario.class, id_user);
+            user.setCantidad_membresias(user.getCantidad_membresias() + cantidadMembresias);
+            if(user.getCantidad_membresias() == 0) {
+                user.setFecha_inicio_membresia(fecha);
+            }
+             // guarda usuario persistentemente
+             manager.persist(user);
+            // envia transaccion
+            transaction.commit();
+            w = "try";
+        } catch (Exception ex) {
+            w = "execption: " + ex;
+            if (transaction != null) {
+                w+="\nrollback()";
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return w;
+
+    }
 }

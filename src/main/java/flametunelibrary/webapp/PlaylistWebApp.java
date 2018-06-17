@@ -81,24 +81,13 @@ public class PlaylistWebApp {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
 
-    //public List<Playlist> getPlaylist(){
-    public Response getPlaylist(){
+    public List<Playlist> getPlaylist(){
 
         Database db = new Database();
 
         List<Playlist> listPlaylist = db.getListPlaylist();
-       // return listPlaylist;
+        return listPlaylist;
 
-
-        return Response
-                .status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(listPlaylist)
-                .build();
     }
 
 
