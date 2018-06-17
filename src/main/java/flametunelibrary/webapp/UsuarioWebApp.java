@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 //import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -251,6 +252,7 @@ public class UsuarioWebApp {
                     res2 = new JSONObject("{\"id\":"+user.getId()+"}");
                     b.update(user.getId(), user.getCorreo(), user.getPassword(), user.getNombre_usr(), user.getUrl_foto_usr(),
                             user.getCantidad_membresias(), user.getFecha_inicio_membresia(), user.getNumero_tarjeta(), true);
+                    refrescarEstadoMembresias(user.getId());
                 } else {
                     if (intentos > 3) {
                         //bloqueado
@@ -369,10 +371,43 @@ public class UsuarioWebApp {
     }
 
 
-//    public void refrescarEstadoMembresias
+    public String refrescarEstadoMembresias(int id_user){
+        Database db = new Database();
 
-    //TODO Renovar membresia
+        Calendar today = Calendar.getInstance();
 
+        Usuario user = db.getUser(id_user);
+
+        String result = "fail ";
+
+        if(user.getFecha_inicio_membresia() != null) {
+            int cantidadMemb = user.getCantidad_membresias();
+            String fechaInicio = user.getFecha_inicio_membresia();
+
+            Calendar fecha = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                fecha.setTime(sdf.parse(fechaInicio));
+                fecha.set(Calendar.MONTH,fecha.get(Calendar.MONTH));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            fecha.add(Calendar.DAY_OF_YEAR, 30);
+
+            result ="hoy: "+ today.get(Calendar.YEAR)+"-"+(today.get(Calendar.MONTH)+1)+"-"+today.get(Calendar.DAY_OF_MONTH)+
+                    "\n inicio: "+fecha.get(Calendar.YEAR)+"-"+(fecha.get(Calendar.MONTH)+1)+"-"+fecha.get(Calendar.DAY_OF_MONTH)+"  ";
+
+            if (today.after(fecha)) {
+                if (cantidadMemb > 1) {
+                    result += db.actualizarDatosMembresias(fecha, cantidadMemb - 1, id_user);
+                } else {
+                    result += db.actualizarDatosMembresias(null, 0, id_user);
+                }
+            }
+        }
+        return result;
+    }
 
 
 }

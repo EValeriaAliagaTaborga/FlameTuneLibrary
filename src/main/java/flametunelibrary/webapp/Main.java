@@ -34,8 +34,8 @@ public class Main {
 //        System.out.print(db.getCancion(1));
         //System.out.print(db.search("nadie").toString());
 
-        db.createTarjeta("4",123,"2018-06-02","Visa","Bolivia","Alguien",1);
-
+  //      db.createTarjeta("4",123,"2018-06-02","Visa","Bolivia","Alguien",1);
+        System.out.println(new UsuarioWebApp().refrescarEstadoMembresias(11));
 
     }
 

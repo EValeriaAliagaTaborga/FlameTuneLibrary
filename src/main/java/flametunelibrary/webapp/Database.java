@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Database {
@@ -506,5 +507,40 @@ public class Database {
         }
         return w;
 
+    }
+
+    public String actualizarDatosMembresias(Calendar fecha, int cantidadMemb, int id_user) {
+
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        String w = "fail";
+        try {
+            // empieza transaccion
+            transaction = manager.getTransaction();
+            transaction.begin();
+            //actualizando datos membresia
+            Usuario user = manager.find(Usuario.class,id_user);
+            user.setCantidad_membresias(cantidadMemb);
+            if(fecha != null) {
+                user.setFecha_inicio_membresia(fecha.get(Calendar.YEAR) + "-" + (fecha.get(Calendar.MONTH) + 1) + "-" + fecha.get(Calendar.DAY_OF_MONTH));
+            } else {
+                user.setFecha_inicio_membresia(null);
+            }
+            // guarda usuario persistentemente
+            manager.persist(user);
+            // envia transaccion
+            transaction.commit();
+            w = "try";
+        } catch (Exception ex) {
+            w = "execption: " + ex;
+            if (transaction != null) {
+                w+="\nrollback()";
+                transaction.rollback();
+            }
+            ex.printStackTrace();
+        } finally {
+            manager.close();
+        }
+        return w;
     }
 }
