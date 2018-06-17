@@ -338,6 +338,9 @@ public class UsuarioWebApp {
     public Response createTarjeta(@PathParam("id_user") int id_user, Tarjeta trj) {
         Database db = new Database();
         String cr = db.createTarjeta(trj.getNro_tarjeta(), trj.getCvc_tarjeta(), trj.getFecha_vencimiento_tarjeta(),trj.getTipo_tarjeta(), trj.getPais_tarjeta(),trj.getNombre_usuario_tarjeta(),id_user);
+        if(cr.equals("try")) {
+            cr="Tarjeta creada";
+        }
         return Response
                 .status(200)
                 .header("Access-Control-Allow-Origin", "*")

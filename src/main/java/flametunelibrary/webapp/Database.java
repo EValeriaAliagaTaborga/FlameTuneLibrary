@@ -437,16 +437,23 @@ public class Database {
             // empieza transaccion
             transaction = manager.getTransaction();
             transaction.begin();
-            // crear objeto
-            Tarjeta trj = new Tarjeta();
-            trj.setNro_tarjeta(nro_tarjeta);
-            trj.setCvc_tarjeta(cvc_tarjeta);
-            trj.setFecha_vencimiento_tarjeta(fecha_vencimiento_tarjeta);
-            trj.setTipo_tarjeta(tipo_tarjeta);
-            trj.setPais_tarjeta(pais_tarjeta);
-            trj.setNombre_usuario_tarjeta(nombre_usuario_tarjeta);
-            // guarda playlist persistentemente
-            manager.persist(trj);
+            //verificar existencia de tarjeta
+            Tarjeta trj = manager.find(Tarjeta.class, nro_tarjeta);
+            if(trj == null) {
+                // crear objeto
+                trj = new Tarjeta();
+                trj.setNro_tarjeta(nro_tarjeta);
+                trj.setCvc_tarjeta(cvc_tarjeta);
+                trj.setFecha_vencimiento_tarjeta(fecha_vencimiento_tarjeta);
+                trj.setTipo_tarjeta(tipo_tarjeta);
+                trj.setPais_tarjeta(pais_tarjeta);
+                trj.setNombre_usuario_tarjeta(nombre_usuario_tarjeta);
+                // guarda playlist persistentemente
+                manager.persist(trj);
+            }
+            //aniadir tarjeta a usuario
+            Usuario user = manager.find(Usuario.class, id_user);
+            user.setNumero_tarjeta(nro_tarjeta);
             // envia transaccion
             transaction.commit();
             w = "try";

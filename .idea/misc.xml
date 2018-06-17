@@ -33,16 +33,15 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
-    <file type="web" url="file://$PROJECT_DIR$/../TrabajoGrupal" />
   </component>
   <component name="GradleLocalSettings">
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="3056481101192" />
+        <entry key="$PROJECT_DIR$" value="3058383191276" />
       </map>
     </option>
   </component>
-  <component name="IdProvider" IDEtalkID="CDDD0CB77432A9A504F2D94C947926DC" />
+  <component name="IdProvider" IDEtalkID="6EB80A717E13ABDD6ED404FC386CA21D" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />

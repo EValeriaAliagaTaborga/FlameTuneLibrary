@@ -22,7 +22,7 @@ public class Tarjeta implements Serializable {
     @Column(name = "tipo_tarjeta", nullable = false)
     private String tipo_tarjeta;
 
-    @Column(name = "pais_tajeta", nullable = false)
+    @Column(name = "pais_tarjeta", nullable = false)
     private String pais_tarjeta;
 
     @Column(name = "nombre_usuario_tarjeta", nullable = false)
