@@ -343,10 +343,11 @@ public class UsuarioWebApp {
 
 
     @PUT
-    @Path("/comprarMembresias/{id_user}")
+    //@Path("/comprarMembresias/{id_user}")
+    @Path("/comprarMembresias/{id_user}/{cantidad_membresias}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response comprarMembresias(@PathParam("id_user") int id_user,@QueryParam("cantidad_membresias") int cantidad_membresias) {
+    public Response comprarMembresias(@PathParam("id_user") int id_user,@PathParam("cantidad_membresias") int cantidad_membresias) {
         Database db = new Database();
         Calendar today = Calendar.getInstance();
         String fecha = today.get(Calendar.YEAR)+"-"+today.get(Calendar.MONTH)+"-"+today.get(Calendar.DAY_OF_MONTH);
