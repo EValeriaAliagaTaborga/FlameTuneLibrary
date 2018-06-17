@@ -22,6 +22,9 @@ public class PlaylistWebApp {
     public Response createPlaylist(@PathParam("id_user") int id_user, Playlist pl) {
         Database db = new Database();
         String cr = db.createPlaylist(pl.getId_playlist(),pl.getNombre_playlist(),pl.getTipo_acceso_playlist(),id_user);
+        if(cr.equals("try")) {
+            cr = "Playlist" +pl.getNombre_playlist()+ "creada";
+        }
         return Response
                 .status(200)
                 .header("Access-Control-Allow-Origin", "*")
@@ -39,7 +42,6 @@ public class PlaylistWebApp {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePlaytlist(@PathParam("id_pl") int id, Playlist pl) {
-        // Fetch user and return response
         String result = "Playlist Guardada : " + pl;
         Database b = new Database();
         b.updatePlaylist(id, pl.getNombre_playlist(), pl.getTipo_acceso_playlist());
@@ -77,15 +79,15 @@ public class PlaylistWebApp {
 
 
     @GET()
-    @Path("/getList")
+    @Path("/getList/{id_user}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
 
-    public List<Playlist> getPlaylist(){
+    public List<Playlist> getPlaylist(@PathParam("id_user") int id_user){
 
         Database db = new Database();
 
-        List<Playlist> listPlaylist = db.getListPlaylist();
+        List<Playlist> listPlaylist = db.getListPlaylist(id_user);
         return listPlaylist;
 
     }

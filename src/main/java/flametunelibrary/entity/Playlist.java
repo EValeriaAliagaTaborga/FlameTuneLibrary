@@ -10,8 +10,6 @@ import java.io.Serializable;
 @Table(name = "playlist")
 public class Playlist implements Serializable {
     @Id
-   //Si no funciona el autoincrement
-   //@Column(name = "id_playlist", unique = true, nullable = false)
     @Column(name = "id_playlist", unique = true)
     private int id_playlist;
 

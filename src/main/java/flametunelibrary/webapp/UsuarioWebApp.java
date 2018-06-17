@@ -140,18 +140,6 @@ public class UsuarioWebApp {
 
         Usuario usr = d.getUser(user);
         return usr;
-        /*new Usuario();
-        usr.setId(1);
-        usr.setCorreo("example123@mail.com");
-        usr.setNombre_usr("Nombre de Usuario");
-        usr.setPassword("******");
-        usr.setUrl_foto_usr("url foto");
-        usr.setCantidad_membresias(4);
-        usr.setFecha_inicio_membresia("2018-05-23");
-        usr.setNumero_tarjeta("123");
-        */
-
-//        return  "Algo";
     }
 
 
@@ -317,15 +305,6 @@ public class UsuarioWebApp {
     }
 
 
-
-
-    @GET()
-    @Path("/loginPrueba")
-    public String prueba() {
-        return  "Algo";
-    }
-
-
     @GET
     @Path("/logout/{userName}")
     public Response logout(@PathParam("userName") String userName) {
@@ -369,7 +348,6 @@ public class UsuarioWebApp {
 
 
     @PUT
-    //@Path("/comprarMembresias/{id_user}")
     @Path("/comprarMembresias/{id_user}/{cantidad_membresias}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
