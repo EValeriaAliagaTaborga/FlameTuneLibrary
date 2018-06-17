@@ -11,6 +11,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Path("/usuarios")
@@ -126,6 +127,8 @@ public class UsuarioWebApp {
 
     @GET()
     @Path("/get/{user}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Usuario getUsuariosUrl(@PathParam("user") int user){
         Database d = new Database();
 
@@ -353,6 +356,35 @@ public class UsuarioWebApp {
     }
 
 
+    @PUT
+    @Path("/comprarMembresias/{id_user}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response comprarMembresias(@PathParam("id_user") int id_user,@QueryParam("cantidad_membresias") int cantidad_membresias) {
+        Database db = new Database();
+        Calendar today = Calendar.getInstance();
+        String fecha = today.get(Calendar.YEAR)+"-"+today.get(Calendar.MONTH)+"-"+today.get(Calendar.DAY_OF_MONTH);
+
+
+        String cr = db.comprarMembresiaUsuario(id_user, cantidad_membresias, fecha);
+        if(cr.equals("try")) {
+            cr = cantidad_membresias+" membresias compradas el "+ fecha;
+        }
+        return Response
+                .status(200)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+                .header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+                .header("Access-Control-Max-Age", "1209600")
+                .entity(cr)
+                .build();
+    }
+
+
+//    public void refrescarEstadoMembresias
+
+    //TODO Renovar membresia
 
 
 
