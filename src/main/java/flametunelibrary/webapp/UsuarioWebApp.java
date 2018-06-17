@@ -1,16 +1,21 @@
 package flametunelibrary.webapp;
 
 import flametunelibrary.entity.Usuario;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+//import flametunelibrary.entity.Login;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+//import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+//import com.google.gson.JsonObject;
 
 @Path("/usuarios")
 public class UsuarioWebApp {
@@ -145,27 +150,6 @@ public class UsuarioWebApp {
     }
 
 
-    @GET
-    @Path("/get")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-
-    public String getTrackInJSON() {
-        Usuario user = new Usuario();
-        user.setId(4);
-        user.setCantidad_membresias(0);
-        user.setCorreo("mail");
-        user.setFecha_inicio_membresia("0");
-        user.setNombre_usr("user");
-        user.setNumero_tarjeta("0");
-        user.setPassword("pass");
-        user.setUrl_foto_usr("foto");
-
-        return user.toString();
-    }
-
-
-
     @PUT
     @Path("/put/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -230,37 +214,43 @@ public class UsuarioWebApp {
     private static int intentos = 1;
     private static int horaDesbloqueo = 0;
     private static boolean bloqueado = false;
-    @GET
-    @Path("/login/{userName}")
+
+
+    @POST
+    //@Path("/login/{userName}")
+    @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@PathParam("userName") String userName, @QueryParam("password") String password) {
+    //public Response login(@PathParam("userName") String userName, @QueryParam("password") String password) {
+    public JSONObject login(JSONObject data) throws JSONException {
 
         //String result = "Usuario Guardado : " + usr;
+        //TODO crear clase de login y adaptar metodo para usarla
+        String userName = data.getString("name");
+        String password = data.getString("password");
         Database b = new Database();
         Usuario user = b.getUserLogin(userName);
 
-
         String result = "";
+        JSONObject res2 = null;
 
         if(!bloqueado) {
             if (user == null) {
                 //Correo o nombre de usuario inexistentes
                 result = "Usuario inexistente";
-
             } else {
                 String passwordGuardada = user.getPassword();
                 if (password.equals(passwordGuardada)) {
                     intentos = 1;
                     //result = "Login satisfactorio, acceso permitido";
-                    result = user.getId()+"";
+                    result = "logged";
+                    res2 = new JSONObject("{\"id\":"+user.getId()+"}");
                     b.update(user.getId(), user.getCorreo(), user.getPassword(), user.getNombre_usr(), user.getUrl_foto_usr(),
                             user.getCantidad_membresias(), user.getFecha_inicio_membresia(), user.getNumero_tarjeta(), true);
                 } else {
                     if (intentos > 3) {
                         //bloqueado
                         result = "Usuario bloqueado, por favor espere";
-
                         Date date = new Date();
                         DateFormat hourFormat = new SimpleDateFormat("HHmmss");
                         horaDesbloqueo = Integer.parseInt(hourFormat.format(date))+100;
@@ -268,7 +258,7 @@ public class UsuarioWebApp {
                     } else {
                         //login fallido
                         intentos++;
-                        result = "Login fallido, password incorrecto";
+                        result = "Login fallido, password incorrecto"+password+":"+passwordGuardada;
                     }
                 }
             }
@@ -276,7 +266,6 @@ public class UsuarioWebApp {
             Date date2 = new Date();
             DateFormat hourFormat2 = new SimpleDateFormat("HHmmss");
             int horaActual = Integer.parseInt(hourFormat2.format(date2));
-
 //            int horaComprobacion = horaDesbloqueo-40;
             if (horaActual < horaDesbloqueo){
 //              int tiempoRestante = horaComprobacion - horaActual;
@@ -288,15 +277,12 @@ public class UsuarioWebApp {
                 intentos = 1;
             }
         }
-        return Response
-                .status(200)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-                .header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-                .header("Access-Control-Max-Age", "1209600")
-                .entity(result)
-                .build();
+        if(res2 != null){
+            return res2;
+        } else {
+            return new JSONObject("{\"res\":"+result+"}");
+        }
+
 
     }
 
