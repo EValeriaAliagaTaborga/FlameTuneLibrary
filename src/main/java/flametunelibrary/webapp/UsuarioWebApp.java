@@ -238,7 +238,6 @@ public class UsuarioWebApp {
 
         String result = "";
         JSONObject res2 = null;
-
         String jason = "{";
         jason+="\"id\":"+user.getId();
         jason+=",\"mail\":\""+user.getCorreo();
