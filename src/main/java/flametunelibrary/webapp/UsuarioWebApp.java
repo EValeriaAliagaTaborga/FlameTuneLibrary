@@ -239,6 +239,30 @@ public class UsuarioWebApp {
         String result = "";
         JSONObject res2 = null;
 
+        String jason = "{";
+        jason+="\"id\":"+user.getId();
+        jason+=",\"mail\":\""+user.getCorreo();
+        jason+="\",\"pass\":\""+user.getPassword();
+        jason+="\",\"name\":\""+user.getNombre_usr();
+        if(user.getUrl_foto_usr()==null){
+            jason+="\",\"url\":null";
+        }else{
+            jason+="\",\"url\":\""+user.getUrl_foto_usr()+"\"";
+        }
+        jason+=",\"cantidad\":"+user.getCantidad_membresias();
+        if(user.getFecha_inicio_membresia()==null){
+            jason+=",\"fecha\":null";
+        }else{
+            jason+=",\"fecha\":\""+user.getFecha_inicio_membresia()+"\"";
+        }
+        if(user.getNumero_tarjeta()==null){
+            jason+=",\"numero\":null";
+        }else{
+            jason+=",\"numero\":\""+user.getNumero_tarjeta()+"\"";
+        }
+        jason+=",\"logged2\":"+user.isLogged();
+        jason+="}";
+
         if(!bloqueado) {
             if (user == null) {
                 //Correo o nombre de usuario inexistentes
@@ -249,7 +273,8 @@ public class UsuarioWebApp {
                     intentos = 1;
                     //result = "Login satisfactorio, acceso permitido";
                     result = "logged";
-                    res2 = new JSONObject("{\"id\":"+user.getId()+"}");
+                    //res2 = new JSONObject("{\"id\":"+user.getId()+"}");
+                    res2 = new JSONObject(jason);
                     b.update(user.getId(), user.getCorreo(), user.getPassword(), user.getNombre_usr(), user.getUrl_foto_usr(),
                             user.getCantidad_membresias(), user.getFecha_inicio_membresia(), user.getNumero_tarjeta(), true);
                     refrescarEstadoMembresias(user.getId());
