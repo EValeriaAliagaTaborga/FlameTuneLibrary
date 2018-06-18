@@ -30,7 +30,9 @@ public class Main {
 
        // System.out.print(db.deletePlaylist(3));
 
-        System.out.print(db.getListPlaylist(1).toString());
+       // System.out.print(db.getListPlaylist(1).toString());
+
+      //  System.out.println(db.createPlaylist(null,"playlist8",false,1));
 
 //        System.out.print(db.getCancion(1));
         //System.out.print(db.search("nadie").toString());

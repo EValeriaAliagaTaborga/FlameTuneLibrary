@@ -234,7 +234,7 @@ public class Database {
 
     public String createPlaylist(int id_playlist, String nombre_playlist, boolean tipo_acceso_playlist, int id_user) {
         // Create an EntityManager
-        System.out.println("Creando Playlist : " + nombre_playlist+ " id : "+id_playlist);
+        System.out.println("Creando Playlist : " + nombre_playlist);
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         String w = "fail";
@@ -250,10 +250,13 @@ public class Database {
             pl.setTipo_acceso_playlist(tipo_acceso_playlist);
             // guarda playlist persistentemente
             manager.persist(pl);
+            //pedir id
+            String name = "\'"+nombre_playlist+"\'";
+            Playlist pl2 = manager.createQuery("SELECT  p FROM Playlist p WHERE nombre_playlist like "+ name, Playlist.class).getSingleResult();
             // aniadir relacion entre usuario y playlist
             UsuarioPlaylist userPlaylist = new UsuarioPlaylist();
             userPlaylist.setId_user(id_user);
-            userPlaylist.setId_playlist(id_playlist);
+            userPlaylist.setId_playlist(pl2.getId_playlist());
             manager.persist(userPlaylist);
             // envia transaccion
             transaction.commit();
