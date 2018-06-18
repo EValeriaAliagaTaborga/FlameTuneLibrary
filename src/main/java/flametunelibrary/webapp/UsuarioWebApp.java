@@ -305,8 +305,10 @@ public class UsuarioWebApp {
     }
 
 
-    @GET
+    @PUT
     @Path("/logout/{userName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response logout(@PathParam("userName") String userName) {
         Database db = new Database();
         Usuario user = db.getUserLogin(userName);
